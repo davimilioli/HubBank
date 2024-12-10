@@ -8,7 +8,10 @@ class LoginController extends BaseController implements LoginContract{
     }
 
     signIn(): string {
+        const { email, password } = this.req.body;
+        console.log(email, password);
 
+        this.res.status(200).json({ message: 'Logado com sucesso' });
         return 'Logado com sucesso';
     }
 
