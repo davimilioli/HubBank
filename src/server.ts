@@ -1,4 +1,5 @@
 import Express from 'express';
+import sequelize from './database';
 import dotenv from 'dotenv';
 import routers from './routers';
 dotenv.config()
@@ -14,5 +15,15 @@ server.use('/assets', Express.static(__dirname + '/views/assets'));
 server.use(routers);
 
 server.listen(PORT, () => {
+    initDataBase()
     console.log(`Servidor: http://localhost:${PORT}`);
 })
+
+async function initDataBase(){
+    try {
+        await sequelize.sync();
+        await sequelize.authenticate();
+    } catch(error){
+        console.error('Erro ao conectar no banco de dados', error)
+    }
+}
