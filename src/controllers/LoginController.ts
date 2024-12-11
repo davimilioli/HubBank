@@ -1,17 +1,19 @@
 import LoginContract from "../contracts/LoginContract";
 import BaseController from "./BaseController";
+import UserService from "../services/UserService";
 
 class LoginController extends BaseController implements LoginContract{
     index(): void {
-        const user = 'Davi'
-        this.res.render('login', { user });
+        this.res.render('login');
     }
 
-    signIn(): string {
+    async signIn(): Promise<string> {
         const { email, password } = this.req.body;
-        console.log(email, password);
+        const userService = new UserService();
+        const userAuth = await userService.auth(email, password);
+        console.log(userAuth)
 
-        this.res.status(200).json({ message: 'Logado com sucesso' });
+        this.res.status(200).json({ userAuth });
         return 'Logado com sucesso';
     }
 
