@@ -1,6 +1,6 @@
 interface LoginContract {
     index(): void;
-    signIn(): Promise<string>;
+    signIn(): Promise<void>;
 }
  
 export default LoginContract
