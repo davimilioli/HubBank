@@ -25,13 +25,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (!response.ok) {
                     const error = await response.json();
-                    console.error('Erro:', error.message);
-                    alert(`Erro: ${error.message}`);
+                    const errorMessage = document.querySelector('.error-message p');
+
+                    if(error.message == 'Credenciais inválidas'){
+                        errorMessage.textContent = 'Senha inválida';
+                    } else if(error.message == 'Usuário não existe'){
+                        errorMessage.textContent = 'Usuário não existe';
+                    } else {
+                        alert('Erro ao fazer login');
+                    }
+
                     return;
                 }
 
                 const result = await response.json();
-                console.log(result);
+
+                if(result.status == 'success' && result.statusCode == 200){
+                    return window.location.href = '/';
+                }
 
             } catch (error) {
                 console.error('Erro ao enviar formulário:', error);
