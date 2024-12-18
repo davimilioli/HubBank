@@ -3,11 +3,12 @@ import User from "../models/User";
 import dotenv from 'dotenv';
 dotenv.config();
 import jwt from 'jsonwebtoken';
-import ResponseHandler from "../utils/ResponseHandler";
+import ResponseHandler from "../utils/ResponseHandlerUtil";
+import ResponseHandlerModel from "../models/ResponseHandler";
 
-class UserService implements LoginServiceContract {
+class LoginService implements LoginServiceContract {
 
-    public async auth(email: string, password: string) {
+    public async auth(email: string, password: string): Promise<ResponseHandlerModel> {
         try {
             const user = await User.findOne({ where: { email } });
 
@@ -17,15 +18,15 @@ class UserService implements LoginServiceContract {
 
             const { senha, nome } = user.dataValues;
             const JWT_SECRET = process.env.JWT_TOKEN as string;
-
             if (password === senha) {
                 const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "1h" });
+                
                 return ResponseHandler.success("Login feito com sucesso", 200, {
                     user: nome,
                     token,
                     expiration: "1h",
                 });
-            }
+            } 
 
             return ResponseHandler.error("Credenciais inválidas", 401);
         } catch (error) {
@@ -35,4 +36,4 @@ class UserService implements LoginServiceContract {
     }
 }
 
-export default UserService;
+export default LoginService;

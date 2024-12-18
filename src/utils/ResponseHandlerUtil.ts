@@ -1,4 +1,4 @@
-class ResponseHandler {
+class ResponseHandlerUtil {
     static success(message: string, statusCode: number, data: any): { status: string, message: string, statusCode: number, data: any } {
         return {
             status: 'success',
@@ -17,4 +17,4 @@ class ResponseHandler {
     }
 }
 
-export default ResponseHandler;
+export default ResponseHandlerUtil;
