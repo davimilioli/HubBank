@@ -2,17 +2,19 @@ import BaseController from "./BaseController";
 import LoginService from "../services/LoginService";
 
 class LoginController extends BaseController {
+    private loginService = new LoginService()
+
     index() {
-        this.res.render('login');
+        return this.res.render('login');
     }
 
     async signIn() {
         const { email, password } = this.req.body;
-        const loginService = new LoginService();
-
+        
         try {
-            const auth = await loginService.auth(email, password);
-            this.res.status(auth.statusCode).json(auth);
+            const auth = await this.loginService.auth(email, password);
+            return this.res.status(auth.statusCode).json(auth);
+            
         } catch (error) {
             this.res.status(500).json({ message: 'Erro interno do servidor', statusCode: 500 });
         }
